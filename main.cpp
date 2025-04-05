@@ -1,9 +1,11 @@
 #include "maps/map.h"
 
 using namespace std;
+using json = nlohmann::json;
 
 int main()
 {
-    foo();
+    hexagonmap map{};
+    map.printMap();
     return 0;
 }
