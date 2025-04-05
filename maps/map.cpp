@@ -31,7 +31,9 @@ hexagonmap::hexagonmap()
         char value;
         if (std::string(valueField).length() == 3) value = std::string(valueField)[1];
         else value = std::string(valueField)[0];
-        cells[r + radius][q - std::max(-radius, -(r + radius))] = cellFactory::createCell(q, r, s, value);
+        QRS qrs(q, r, s);
+        IJ ij = coordinates::qrsToIJ(qrs.q, qrs.r, radius);
+        cells[ij.i][ij.j] = cellFactory::createCell(q, r, s, value);
     }
     for (int i = 0; i < cells.size(); i++)
     {
@@ -39,7 +41,9 @@ hexagonmap::hexagonmap()
         {
             if (!cells[i][j])
             {
-                int r = i + radius, q = j + std::max(-radius, -(r + radius)), s = -q - r;
+                IJ ij(i, j);
+                QRS qrs = coordinates::IJtoQRS(ij.i, ij.j, radius);
+                int q = qrs.q, r = qrs.r, s = qrs.s;
                 cells[i][j] = cellFactory::createCell(q, r, s, 'x');
             }
         }
@@ -66,3 +70,4 @@ void hexagonmap::printMap()
         std::cout << std::endl;
     }
 }
+
